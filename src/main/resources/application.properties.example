@@ -1,0 +1,8 @@
+spring.application.name=foodie-backend
+
+spring.datasource.url=jdbc:mysql://localhost:3306/foodie_db?connectionTimeZone=LOCAL&useSSL=false
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+foodie.admin.email=admin@foodies.com

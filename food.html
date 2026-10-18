@@ -1,0 +1,703 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasty Treats - Where Flavor Meets Perfection</title>
+    <link rel="stylesheet" href="food.css">
+</head>
+
+<body>
+    <div id="backendBanner" style="display:none; background: linear-gradient(135deg, #ff4757, #ff6b81); color:#fff; text-align:center; padding:10px 16px; font-size:13px; font-weight:500; position:sticky; top:0; z-index:10001; box-shadow: 0 2px 10px rgba(0,0,0,0.15);">
+        <span>ℹ️ <strong>GitHub Pages Demo Mode Active:</strong> GitHub Pages static host hai (Java/MySQL cloud par run nahi hota). Real orders ko apne MySQL me save karne ke liye backend ko <code>http://localhost:8080</code> par chalayein ya live cloud backend connect karein.</span>
+        <button onclick="openBackendConfig()" style="margin-left:12px; background:#fff; color:#ff4757; border:none; padding:4px 12px; border-radius:20px; font-weight:700; cursor:pointer; font-size:12px;">⚙️ Backend Settings</button>
+        <button onclick="document.getElementById('backendBanner').style.display='none'" style="margin-left:10px; background:transparent; color:#fff; border:none; font-size:16px; cursor:pointer; line-height:1;">✕</button>
+    </div>
+
+    <header>
+        <div class="navbar">
+            <a href="#home" class="logo">
+                <div class="logo-icon">🍴</div>
+                Tasty Treats
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#offers">Offers</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#" onclick="showOrders(); return false;">Order History</a></li>
+                <li><a href="#" onclick="trackLatestOrder(); return false;">Track Order</a></li>
+                <li><a href="#reservation">Reservation</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <span class="nav-user" id="userGreeting"></span>
+                <button class="nav-btn" id="adminNavBtn" style="display:none" onclick="openAdminDashboard()">Admin</button>
+                <button class="nav-btn" id="authNavBtn" onclick="openAuth()">Login / Signup</button>
+                <button class="nav-btn" id="logoutNavBtn" style="display:none" onclick="logout()">Logout</button>
+                <button class="cart-btn" onclick="openCart()">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="small-title">
+                WELCOME TO TASTY TREATS
+            </div>
+            <h1>
+                Where Flavor Meets
+                <span>Perfection</span>
+            </h1>
+            <p>
+                Fresh ingredients, authentic recipes and
+                unforgettable taste — delivered straight to your table.
+            </p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">
+                    Order Now
+                </a>
+                <a href="#menu" class="btn btn-outline">
+                    View Menu
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="features">
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🥬</div>
+                <div>
+                    <h4>Fresh Ingredients</h4>
+                    <p>Only the best for you</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🚚</div>
+                <div>
+                    <h4>Fast Delivery</h4>
+                    <p>Hot & fresh, always</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💳</div>
+                <div>
+                    <h4>Secure Payment</h4>
+                    <p>Safe & reliable</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">☎️</div>
+                <div>
+                    <h4>24/7 Support</h4>
+                    <p>We are here for you</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="about">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-image"></div>
+                <div class="about-text">
+                    <div class="small-title">
+                        ABOUT TASTY TREATS
+                    </div>
+                    <h3>
+                        Good Food. Great Moments.
+                    </h3>
+                    <p>
+                        At Tasty Treats, we believe that great food brings
+                        people together. Our chefs use fresh,
+                        high-quality ingredients to create delicious
+                        meals that make every moment special.
+                    </p>
+                    <p>
+                        From our kitchen to your table, we promise
+                        authentic flavors, excellent hygiene and
+                        unforgettable dining experiences.
+                    </p>
+                    <div class="about-points">
+                        <div class="about-point">
+                            ✅ Fresh Ingredients
+                        </div>
+                        <div class="about-point">
+                            ✅ Hygienic Kitchen
+                        </div>
+                        <div class="about-point">
+                            ✅ Experienced Chefs
+                        </div>
+                        <div class="about-point">
+                            ✅ Quality Service
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="showToast('Welcome to Tasty Treats!')">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu">
+        <div class="section-container">
+            <div class="section-heading">
+                <div class="small-title">
+                    OUR MENU
+                </div>
+                <h2>
+                    Delicious Food, Made with Love
+                </h2>
+                <p>
+                    Choose from our wide range of fresh and delicious dishes.
+                </p>
+            </div>
+            <div class="menu-tools">
+                <input type="search" id="menuSearch" class="menu-search" placeholder="Search dishes..."
+                    oninput="handleMenuSearch(this.value)">
+                <label class="veg-filter">
+                    <input type="checkbox" id="vegFilter" onchange="handleVegFilter(this.checked)">
+                    Veg only
+                </label>
+            </div>
+            <div class="menu-tabs">
+                <button class="menu-tab active" onclick="filterMenu('All',this)">
+                    All
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Pizza',this)">
+                    🍕 Pizza
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Burgers',this)">
+                    🍔 Burgers
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Pasta',this)">
+                    🍝 Pasta
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Main Course',this)">
+                    🍛 Main Course
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Starters',this)">
+                    🥗 Starters
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Desserts',this)">
+                    🍰 Desserts
+                </button>
+                <button class="menu-tab" onclick="filterMenu('Beverages',this)">
+                    🥤 Beverages
+                </button>
+            </div>
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+    </section>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+        <a href="#home"><span>⌂</span>Home</a>
+        <a href="#menu"><span>☷</span>Menu</a>
+        <a href="#" onclick="openCart(); return false;"><span>🛒</span>Cart</a>
+        <a href="#orders" onclick="showOrders(); return false;"><span>▣</span>Order History</a>
+        <a href="#" onclick="openAuth(); return false;"><span>●</span>Profile</a>
+    </nav>
+
+    <section class="offers" id="offers">
+        <div class="section-container">
+            <div class="section-heading">
+                <div class="small-title">
+                    SPECIAL OFFERS
+                </div>
+                <h2 style="color:white">
+                    Deals You Don't Want to Miss
+                </h2>
+            </div>
+            <div class="offer-grid">
+                <div class="offer-card">
+                    <h3>20% OFF</h3>
+                    <p>
+                        Get 20% off on your first order.
+                    </p>
+                    <button class="btn btn-primary" onclick="scrollToMenu()">
+                        Order Now
+                    </button>
+                </div>
+                <div class="offer-card">
+                    <h3>Buy 1 Get 1</h3>
+                    <p>
+                        Buy selected burgers and get another free.
+                    </p>
+                    <button class="btn btn-primary" onclick="scrollToMenu()">
+                        Grab Deal
+                    </button>
+                </div>
+                <div class="offer-card">
+                    <h3>Weekend Special</h3>
+                    <p>
+                        Special combos made for your weekend.
+                    </p>
+                    <button class="btn btn-primary" onclick="scrollToMenu()">
+                        View Combo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="section-container">
+            <div class="section-heading">
+                <div class="small-title">
+                    OUR GALLERY
+                </div>
+                <h2>
+                    A Glimpse of Our Delicious Journey
+                </h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80">
+                </div>
+                <div class="gallery-item">
+                    <img
+                        src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=700&q=80">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews">
+        <div class="section-container">
+            <div class="section-heading">
+                <div class="small-title">
+                    CUSTOMER REVIEWS
+                </div>
+                <h2>
+                    What Our Customers Say
+                </h2>
+            </div>
+            <div class="review-grid">
+                <div class="review-card">
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+                    <p>
+                        "Amazing food and excellent service!
+                        The pizza was absolutely delicious."
+                    </p>
+                    <strong>Priya Sharma</strong>
+                </div>
+                <div class="review-card">
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+                    <p>
+                        "Best burger in town. Fresh ingredients
+                        and great taste. Highly recommended!"
+                    </p>
+                    <strong>Rohit Verma</strong>
+                </div>
+                <div class="review-card">
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+                    <p>
+                        "Loved the ambience and food.
+                        Will definitely visit again!"
+                    </p>
+                    <strong>Shekha Kapoor</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservation">
+        <div class="section-container">
+            <div class="section-heading">
+                <div class="small-title">
+                    RESERVATION
+                </div>
+                <h2>
+                    Reserve Your Table
+                </h2>
+            </div>
+            <div class="form-layout">
+
+                <div class="form-card">
+                    <h3>
+                        Book a Table
+                    </h3>
+                    <form id="reservationForm" novalidate>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="reserveDate" required>
+                            <span class="field-error" id="reserveDateError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Time</label>
+                            <input type="time" id="reserveTime" required>
+                            <span class="field-error" id="reserveTimeError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Guests</label>
+                            <select id="guestCount" required>
+                                <option value="">
+                                    Select
+                                </option>
+                                <option value="1">1 Person</option>
+                                <option value="2">2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5">5 People</option>
+                                <option value="6">6 People</option>
+                            </select>
+                            <span class="field-error" id="guestCountError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="reserveName" placeholder="Your name" required>
+                            <span class="field-error" id="reserveNameError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="reservePhone" placeholder="10 digit phone number" maxlength="10" required>
+                            <span class="field-error" id="reservePhoneError"></span>
+                        </div>
+                        <button class="btn btn-primary" type="submit">
+                            Book Now
+                        </button>
+                    </form>
+                </div>
+
+                <div class="form-card" id="contact">
+                    <h3>
+                        Contact Us
+                    </h3>
+                    <p>
+                        Have a question? Send us a message
+                        and our team will help you.
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-box">
+                            <strong>📍 Address</strong>
+                            125 Food Street, Mumbai
+                        </div>
+                        <div class="contact-box">
+                            <strong>☎ Phone</strong>
+                            +91 98765 43210
+                        </div>
+                        <div class="contact-box">
+                            <strong>✉ Email</strong>
+                            info@tastytreats.com
+                        </div>
+                        <div class="contact-box">
+                            <strong>🕐 Hours</strong>
+                            11:00 AM - 11:00 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo">
+                    <div class="logo-icon">🍴</div>
+                    Tasty Treats
+                </div>
+                <p style="margin-top:15px">
+                    Where Flavor Meets Perfection.
+                    Fresh food, great taste and
+                    unforgettable moments.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#menu">Menu</a>
+                <a href="#offers">Offers</a>
+                <a href="react/index.html">React Menu</a>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <a href="#reservation">Table Reservation</a>
+                <a href="#menu">Online Ordering</a>
+                <a href="#" onclick="showOrders(); return false;">Order History</a>
+                <a href="#contact">Contact</a>
+                <a href="#" onclick="openAuth()">Login</a>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">YouTube</a>
+                <a href="#">WhatsApp</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Tasty Treats | All Rights Reserved |
+            Mini Project
+        </div>
+    </footer>
+
+    <div class="modal" id="trackingModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal('trackingModal')" aria-label="Close order tracking">×</button>
+            <div class="small-title">ORDER TRACKING</div>
+            <h2 id="trackingTitle">Your Order</h2>
+            <div id="trackingContent"></div>
+        </div>
+    </div>
+    <div class="modal" id="ordersModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal('ordersModal')" aria-label="Close orders">×</button>
+            <div class="small-title">ORDER HISTORY</div>
+            <h2>Order History</h2>
+            <div id="ordersContent"></div>
+        </div>
+    </div>
+    <div class="modal" id="cartModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal('cartModal')">
+                ×
+            </button>
+            <h2>Your Cart 🛒</h2>
+            <div id="cartItems"></div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <strong id="cartSubtotal">₹0</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Charges</span>
+                    <strong id="deliveryCharge">₹40</strong>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <strong id="cartTotal">₹40</strong>
+                </div>
+                <button class="btn btn-primary" style="width:100%;margin-top:15px" onclick="openCheckout()">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="checkoutModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal('checkoutModal')">
+                ×
+            </button>
+            <h2>Checkout</h2>
+            <form id="checkoutForm" novalidate>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="checkoutName" required>
+                    <span class="field-error" id="checkoutNameError"></span>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="checkoutPhone" maxlength="10" required>
+                    <span class="field-error" id="checkoutPhoneError"></span>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <textarea id="checkoutAddress" required></textarea>
+                    <span class="field-error" id="checkoutAddressError"></span>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="paymentMethod" required>
+                        <option value="">
+                            Select Payment Method
+                        </option>
+                        <option>
+                            Cash on Delivery
+                        </option>
+                        <option>
+                            Online Payment
+                        </option>
+                    </select>
+                    <span class="field-error" id="paymentMethodError"></span>
+                </div>
+                <div id="checkoutAmount" style="margin-bottom:15px;font-size:16px;">
+                    Total Payable: <strong id="checkoutTotal" style="color:#ff4757">₹0</strong>
+                </div>
+                <button class="btn btn-primary" type="submit" style="width:100%">
+                    Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="authModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal('authModal')">
+                ×
+            </button>
+            <h2>Login / Signup</h2>
+            <div class="auth-tabs">
+                <button class="auth-tab active" type="button" onclick="showAuthTab('login', this)">Login</button>
+                <button class="auth-tab" type="button" onclick="showAuthTab('signup', this)">Signup</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button class="btn btn-primary" type="submit" style="width:100%">
+                    Login
+                </button>
+            </form>
+            <form id="signupForm" style="display:none">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" minlength="6" required>
+                </div>
+                <button class="btn btn-primary" type="submit" style="width:100%">
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal('adminModal')">
+                ×
+            </button>
+            <div class="admin-header">
+                <div>
+                    <div class="small-title">
+                        ADMIN PANEL
+                    </div>
+                    <h2>Dashboard</h2>
+                </div>
+                <button class="btn btn-primary" onclick="logout()">
+                    Logout
+                </button>
+            </div>
+            <div class="cards" style="display:grid;grid-template-columns:repeat(2,1fr)">
+                <div class="card">
+                    <h3 id="adminOrders">0</h3>
+                    <p>Total Orders</p>
+                </div>
+                <div class="card">
+                    <h3 id="adminReservations">0</h3>
+                    <p>Reservations</p>
+                </div>
+            </div>
+            <h3 style="margin-top:30px">
+                Orders
+            </h3>
+            <div style="overflow-x:auto">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminOrderList"></tbody>
+                </table>
+            </div>
+            <h3 style="margin-top:30px">
+                Reservations
+            </h3>
+            <div style="overflow-x:auto">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Guests</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminReservationList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="backendModal">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2>Backend Connection Setup</h2>
+                <button class="modal-close" onclick="closeModal('backendModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <p style="font-size: 14px; color: #555; margin-bottom: 15px; line-height: 1.5;">
+                    GitHub Pages sirf Frontend (HTML/JS) chalta hai. Agar aap chahte hain ke orders aur login aapke <strong>MySQL Database</strong> me save hon:
+                </p>
+                <div style="background: #f8f9fa; border-left: 4px solid #ff4757; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 13px;">
+                    <strong>1. Localhost par chalane ke liye:</strong><br>
+                    Terminal me <code>./mvnw spring-boot:run</code> run karein aur browser me <a href="http://localhost:8080" target="_blank" style="color: #ff4757; font-weight: bold;">http://localhost:8080</a> open karein.
+                </div>
+                <div style="background: #f8f9fa; border-left: 4px solid #2ed573; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 13px;">
+                    <strong>2. Cloud par Live karne ke liye:</strong><br>
+                    Render.com par repo connect karein aur wahan mila live backend URL yahan daalein:
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; font-size: 13px;">Live Backend API URL:</label>
+                    <input type="url" id="backendUrlInput" placeholder="https://your-app.onrender.com" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px; box-sizing: border-box;">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="saveBackendUrl()" style="flex: 1; padding: 10px;">Save & Connect</button>
+                    <button class="btn btn-outline" onclick="resetBackendUrl()" style="flex: 1; padding: 10px;">Reset Demo Mode</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="food.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie's - React Menu</title>
+    <link rel="stylesheet" href="/food.css">
+    <style>
+        .react-page {
+            max-width: 1150px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .cart-panel {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .cart-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function FoodCard({ item, onAdd }) {
+            return (
+                <div className="food-card">
+                    <div className="food-image">
+                        <img src={item.imageUrl} alt={item.name} />
+                        <span className={"food-badge " + (item.foodType === "Veg" ? "veg" : "nonveg")}>
+                            ● {item.foodType}
+                        </span>
+                    </div>
+                    <div className="food-content">
+                        <h3>{item.name}</h3>
+                        <p className="food-description">{item.description}</p>
+                        <div className="food-bottom">
+                            <span className="price">₹{item.price}</span>
+                            <button className="add-btn" onClick={() => onAdd(item)}>Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function MenuList({ items, onAdd }) {
+            if (items.length === 0) {
+                return <p className="empty">Loading menu...</p>;
+            }
+            return (
+                <div className="menu-grid">
+                    {items.map(item => (
+                        <FoodCard key={item.id} item={item} onAdd={onAdd} />
+                    ))}
+                </div>
+            );
+        }
+
+        function Cart({ cart, total, onRemove }) {
+            return (
+                <div className="cart-panel">
+                    <h3>Cart ({cart.length} items)</h3>
+                    {cart.length === 0 ? (
+                        <p className="empty">Your cart is empty.</p>
+                    ) : (
+                        <div>
+                            {cart.map(line => (
+                                <div className="cart-line" key={line.id}>
+                                    <span>{line.name} × {line.quantity}</span>
+                                    <span>
+                                        ₹{line.price * line.quantity}
+                                        <button className="qty-btn" onClick={() => onRemove(line.id)}>×</button>
+                                    </span>
+                                </div>
+                            ))}
+                            <div className="summary-row summary-total">
+                                <span>Total</span>
+                                <strong>₹{total}</strong>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function App() {
+            const [menu, setMenu] = useState([]);
+            const [cart, setCart] = useState([]);
+
+            useEffect(() => {
+                fetch("/api/menu")
+                    .then(response => response.json())
+                    .then(data => setMenu(data))
+                    .catch(error => console.error("Menu load failed", error));
+            }, []);
+
+            function addToCart(item) {
+                setCart(current => {
+                    const existing = current.find(line => line.id === item.id);
+                    if (existing) {
+                        return current.map(line =>
+                            line.id === item.id ? { ...line, quantity: line.quantity + 1 } : line);
+                    }
+                    return [...current, { id: item.id, name: item.name, price: item.price, quantity: 1 }];
+                });
+            }
+
+            function removeFromCart(id) {
+                setCart(current => current.filter(line => line.id !== id));
+            }
+
+            const total = cart.reduce((sum, line) => sum + line.price * line.quantity, 0);
+
+            return (
+                <div className="react-page">
+                    <div className="small-title">REACT MENU (MODULE V)</div>
+                    <h2>Foodie's Menu built with React</h2>
+                    <p style="margin:10px 0 25px"><a href="/food.html">Back to Foodie's</a></p>
+                    <MenuList items={menu} onAdd={addToCart} />
+                    <Cart cart={cart} total={total} onRemove={removeFromCart} />
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+
+</html>
